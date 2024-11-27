@@ -7,15 +7,14 @@ import json
 # إعداد التطبيق
 app = Flask(__name__)
 
-# قراءة بيانات الاعتماد من متغير البيئة
-SERVICE_ACCOUNT_INFO = os.environ.get("GOOGLE_CREDENTIALS_JSON")  # المفتاح الجديد
-if not SERVICE_ACCOUNT_INFO:
-    raise ValueError("Environment variable 'GOOGLE_CREDENTIALS_JSON' not found!")
+# قراءة بيانات الاعتماد من ملف JSON مباشرة
+SERVICE_ACCOUNT_FILE = "GOOGLE_CREDENTIALS_JSON.json"  # اسم الملف
+
+if not os.path.exists(SERVICE_ACCOUNT_FILE):
+    raise ValueError(f"File {SERVICE_ACCOUNT_FILE} not found!")
 
 # إعداد الاعتمادات
-creds = service_account.Credentials.from_service_account_info(
-    json.loads(SERVICE_ACCOUNT_INFO)
-)
+creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE)
 
 # معرف Google Sheets ونطاق البيانات
 SPREADSHEET_ID = '1mdOJkxaV98nQ5taeav8eyd9JcoC_g_WZ3kLz1jKd5V0'
