@@ -1,17 +1,20 @@
 from flask import Flask, request, render_template
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
+import os
+import json
 
 # إعداد التطبيق
 app = Flask(__name__)
 
-# ملف الاعتمادات
-SERVICE_ACCOUNT_FILE = 'darsad-c7d64e48e6eb.json'  # اسم ملف JSON الجديد
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+# قراءة بيانات الاعتماد من متغير البيئة
+SERVICE_ACCOUNT_INFO = os.environ.get("GOOGLE_CREDENTIALS_JSON")  # المفتاح الجديد
+if not SERVICE_ACCOUNT_INFO:
+    raise ValueError("Environment variable 'GOOGLE_CREDENTIALS_JSON' not found!")
 
 # إعداد الاعتمادات
-creds = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES
+creds = service_account.Credentials.from_service_account_info(
+    json.loads(SERVICE_ACCOUNT_INFO)
 )
 
 # معرف Google Sheets ونطاق البيانات
