@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البحث عن بيانات الحجاج</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .section {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    {% if not_found %}
+        <!-- صفحة "لم يتم العثور على نتيجة" -->
+        <div id="not_found" class="section active">
+            <h2>رقم الجواز غير موجود</h2>
+            <p>عذرًا، لا توجد بيانات تطابق رقم الجواز المدخل.</p>
+            <a href="/">عودة</a>
+        </div>
+    {% elif result %}
+        <!-- صفحة النتيجة -->
+        <div id="result" class="section active">
+            <h2>نتيجة البحث</h2>
+            <p><strong>رقم الجواز:</strong> {{ result.passport }}</p>
+            <p><strong>اسم الحاج:</strong> {{ result.name }}</p>
+            <p><strong>اسم المنشأة:</strong> {{ result.company }}</p>
+            <a href="/">عودة</a>
+        </div>
+    {% else %}
+        <!-- صفحة البحث -->
+        <div id="index" class="section active">
+            <h2>بحث عن بيانات الحجاج</h2>
+            <form action="/" method="post">
+                <label>رقم الجواز:</label>
+                <input type="text" name="passport" required>
+                <button type="submit">بحث</button>
+            </form>
+        </div>
+    {% endif %}
+</body>
+</html>
